@@ -21,9 +21,7 @@ circle_speed_x = 5  # pixels per frame
 # Set up the clock for controlling the frame rate
 clock = pygame.time.Clock()
 
-# Main loop
-running = True
-while running:
+def loop():
     # Cap the frame rate at 60 frames per second
     clock.tick(60)
 
@@ -48,6 +46,16 @@ while running:
     # Update the display
     pygame.display.flip()
 
-# Clean up and exit
-pygame.quit()
-sys.exit()
+def main():
+    # Main loop
+    running = True
+    while running:
+        loop()
+    
+    # Clean up and exit
+    pygame.quit()
+    sys.exit()
+
+if __name__ == "__main__":
+    print("Program Started")
+    main()
