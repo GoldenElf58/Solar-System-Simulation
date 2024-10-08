@@ -1,66 +1,20 @@
 import pygame
-import sys
-import os
-import time
 
-from circle import Circle
-
-# Initialize Pygame
-pygame.init()
-
-# Set up the window dimensions
-WIDTH, HEIGHT = 400, 400
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Moving Circle")
-
-# Set up the clock for controlling the frame rate
-clock = pygame.time.Clock()
-
-running = False
-deltaTime = 0
-
-circle = Circle(300, 300, 10, screen, x_speed=1, x_acc=1)
-
-def draw():
-    global circle
-    # Clear the screen with a white background
-    screen.fill((255, 255, 255))
-
-    # Draw the circle
-    circle.draw()
-
-    # Update the display
-    pygame.display.flip()
-
-def event_handling():
-    global running
-    # Event handling
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-
-def loop():
-    global clock, circle, deltaTime
-    # Cap the frame rate at 60 frames per second
-    dt = clock.tick(60) / 1000
-    event_handling()
-
-    circle.update(dt)
-    draw()
-
-
-def main():
-    global running
-    # Main loop
-    running = True
-    while running:
-        loop()
-
-    # Clean up and exit
-    pygame.quit()
-    sys.exit()
-
-if __name__ == "__main__":
-    print("Program Started")
-    main()
+class Object():
+    def __init__(self, x, y, x_acc, y_acc, screen, x_vel=0, y_vel=0):
+        self.x = x
+        self.y = y
+        self.x_acc = x_acc
+        self.y_acc = y_acc
+        self.x_vel = 0
+        self.y_vel = 0
+        self.screen = screen
+    
+    def update(self, dt):
+        self.x_vel += self.x_acc
+        self.y_vel += self.y_acc
+        self.x += self.x_vel * dt
+        self.y += self.y_vel * dt
+    
+    def draw(self):
+        self.pygame.draw.rectangle(self.screen, (255,0,0), self.x, self.y, self.x + 10, self.y + 10)

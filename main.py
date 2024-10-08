@@ -9,15 +9,13 @@ from circle import Circle
 pygame.init()
 
 # Set up the window dimensions
-WIDTH, HEIGHT = 400, 400
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((400, 400))
 pygame.display.set_caption("Moving Circle")
 
 # Set up the clock for controlling the frame rate
 clock = pygame.time.Clock()
 
 running = False
-deltaTime = 0
 
 circle = Circle(300, 300, 10, screen, x_speed=1, x_acc=1)
 
@@ -43,11 +41,13 @@ def event_handling():
 def loop():
     global clock, circle, deltaTime
     # Cap the frame rate at 60 frames per second
-    dt = clock.tick(60) / 1000
+    dt = clock.tick(60) / 1000 # ms to s
     event_handling()
 
     circle.update(dt)
     draw()
+    os.system("clear")
+    print(circle.x, circle.y)
 
 
 def main():
