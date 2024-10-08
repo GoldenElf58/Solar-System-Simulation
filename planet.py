@@ -4,7 +4,10 @@ from object import Object
 
 
 class Planet(Object):
-    def __init__(self, x, y, radius, screen, color=(255,0,0), x_vel=0, y_vel=0, x_acc=0, y_acc=0, x_speed=0, y_speed=0):
+    def __init__(self, x: int, y: int, radius: int, screen: pygame.Surface,
+                 color: tuple = (255, 0, 0), x_vel: int = 0, y_vel: int = 0,
+                 x_acc: int = 0, y_acc: int = 0, x_speed: int = 0,
+                 y_speed: int = 0) -> None:
         """
         Initialize a Planet object
 
@@ -34,12 +37,12 @@ class Planet(Object):
             y speed at which the planet will move
         """
         super().__init__(x, y, x_acc, y_acc, screen, x_vel=x_vel, y_vel=y_vel)
-        self.radius = radius
-        self.color = color
-        self.x_speed = x_speed
-        self.y_speed = y_speed
-    
-    def update(self, dt):
+        self.radius: int = radius
+        self.color: tuple = color
+        self.x_speed: int = x_speed
+        self.y_speed: int = y_speed
+
+    def update(self, dt: float) -> None:
         """
         Update the planet's velocity and position
 
@@ -57,7 +60,7 @@ class Planet(Object):
             self.x_vel = -self.x_speed
         super().update(dt)
 
-    def draw(self):
+    def draw(self) -> None:
         """
         Draw the planet onto its screen
 

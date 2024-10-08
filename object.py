@@ -1,8 +1,9 @@
 import pygame
 
 
-class Object():
-    def __init__(self, x, y, x_acc, y_acc, screen, x_vel=0, y_vel=0):
+class Object:
+    def __init__(self, x: int, y: int, x_acc: int, y_acc: int, screen: pygame.Surface,
+                 x_vel: int = 0, y_vel: int = 0) -> None:
         """
         Initialize an Object
 
@@ -23,15 +24,15 @@ class Object():
         y_vel : int, optional
             initial y velocity
         """
-        self.x = x
-        self.y = y
-        self.x_acc = x_acc
-        self.y_acc = y_acc
-        self.x_vel = x_vel
-        self.y_vel = y_vel
-        self.screen = screen
-    
-    def update(self, dt):
+        self.x: int = x
+        self.y: int = y
+        self.x_acc: int = x_acc
+        self.y_acc: int = y_acc
+        self.x_vel: int = x_vel
+        self.y_vel: int = y_vel
+        self.screen: pygame.Surface = screen
+
+    def update(self, dt: float) -> None:
         """
         Update the object's velocity and position
 
@@ -44,11 +45,10 @@ class Object():
         self.y_vel += self.y_acc
         self.x += self.x_vel * dt
         self.y += self.y_vel * dt
-    
-    def draw(self):
+
+    def draw(self) -> None:
         """
         Draw the object onto its screen
-
         Draws a red rectangle of width and height 10 at position (self.x, self.y) onto the screen self.screen
         """
-        pygame.draw.rect(self.screen, (255,0,0), pygame.Rect(self.x, self.y, self.x + 10, self.y + 10))
+        pygame.draw.rect(self.screen, (255, 0, 0), pygame.Rect(self.x, self.y, self.x + 10, self.y + 10))

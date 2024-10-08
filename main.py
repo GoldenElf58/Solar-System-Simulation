@@ -10,7 +10,7 @@ pygame.init()
 
 # Set up the window dimensions
 screen = pygame.display.set_mode((400, 400))
-pygame.display.set_caption("Moving Circle")
+pygame.display.set_caption("Moving Planet")
 
 # Set up the clock for controlling the frame rate
 clock = pygame.time.Clock()
@@ -18,31 +18,31 @@ clock = pygame.time.Clock()
 running = False
 
 num_planets = 2
-planets = [Planet(randrange(0, screen.get_width()), randrange(0, screen.get_height()), 10, screen, x_speed=50, x_vel=50)
-           for i in range(2)]
+planets = [
+    Planet(randrange(0, screen.get_width()), randrange(0, screen.get_height()), 10, screen, x_speed=randrange(-50, 50),
+           x_vel=randrange(-50, 50)) for i in range(2)]
 
 
-def draw():
+def draw() -> None:
     """
-    Draw the circle onto the screen.
+    Draw the planet onto the screen.
 
-    Clears the screen with a white background, draws the circle
+    Clears the screen with a white background, draws the planet
     at its current position, and updates the display.
 
     Parameters
     ----------
-    None
 
     Returns
     -------
     None
     """
-    global planet
+    global planets
     # Clear the screen with a white background
     screen.fill((255, 255, 255))
 
-    # Draw the circle
-    planet.draw()
+    for planet in planets:
+        planet.draw()
 
     # Update the display
     pygame.display.flip()
@@ -57,7 +57,6 @@ def event_handling():
 
     Parameters
     ----------
-    None
 
     Returns
     -------
@@ -79,21 +78,21 @@ def loop():
 
     Parameters
     ----------
-    None
 
     Returns
     -------
     None
     """
-    global clock, planet, deltaTime
+    global clock, planets
     # Cap the frame rate at 60 frames per second
     dt = clock.tick(60) / 1000  # ms to s
     event_handling()
 
-    planet.update(dt)
+    for planet in planets:
+        planet.update(dt)
     draw()
     # clear()
-    # print(circle.x, circle.y)
+    # print(planet.x, planet.y)
 
 
 def main():
@@ -105,7 +104,6 @@ def main():
 
     Parameters
     ----------
-    None
 
     Returns
     -------

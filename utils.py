@@ -1,7 +1,7 @@
 import os
 
 
-def clear():
+def clear() -> None:
     """
     Clear the terminal screen.
 
