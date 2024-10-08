@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-from circle import Circle
+from circle import Planet
 from utils import clear
 
 # Initialize Pygame
@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 
 running = False
 
-circle = Circle(300, 300, 10, screen, x_speed=50, x_vel=50)
+planet = Planet(300, 300, 10, screen, x_speed=50, x_vel=50)
 
 def draw():
     """
@@ -33,12 +33,12 @@ def draw():
     -------
     None
     """
-    global circle
+    global planet
     # Clear the screen with a white background
     screen.fill((255, 255, 255))
 
     # Draw the circle
-    circle.draw()
+    planet.draw()
 
     # Update the display
     pygame.display.flip()
@@ -80,12 +80,12 @@ def loop():
     -------
     None
     """
-    global clock, circle, deltaTime
+    global clock, planet, deltaTime
     # Cap the frame rate at 60 frames per second
     dt = clock.tick(60) / 1000 # ms to s
     event_handling()
 
-    circle.update(dt)
+    planet.update(dt)
     draw()
     # clear()
     # print(circle.x, circle.y)

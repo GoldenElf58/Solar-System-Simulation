@@ -2,7 +2,7 @@ import pygame
 
 from object import Object
 
-class Circle(Object):
+class Planet(Object):
     def __init__(self, x, y, radius, screen, color=(255,0,0), x_vel=0, y_vel=0, x_acc=0, y_acc=0, x_speed=0, y_speed=0):
         """
         Initialize a Circle object
