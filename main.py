@@ -47,14 +47,16 @@ class Circle(Object):
         # Reverse direction upon reaching screen edges
         if self.x - self.radius <= 0 or self.x + self.radius >= WIDTH:
             self.x_acc *= -1
-        super().__init__()
+        super().update()
 
     def draw(self):
         global screen
         pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius)
 
+circle = Circle(0, 0, 10, x_acc=5)
 
 def draw():
+    global circle
     # Clear the screen with a white background
     screen.fill((255, 255, 255))
 
@@ -73,7 +75,7 @@ def event_handling():
 
 
 def loop():
-    global clock
+    global clock, circle
     # Cap the frame rate at 60 frames per second
     clock.tick(60)
     event_handling()
@@ -83,7 +85,6 @@ def loop():
 
 def main():
     global running
-    circle = Circle(0, 0, 10, x_acc=5)
     # Main loop
     running = True
     while running:
