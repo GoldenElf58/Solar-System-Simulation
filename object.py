@@ -7,7 +7,7 @@ class Object():
         self.x_acc = x_acc
         self.y_acc = y_acc
         self.x_vel = x_vel
-        self.y_vel = x_vel
+        self.y_vel = y_vel
         self.screen = screen
     
     def update(self, dt):

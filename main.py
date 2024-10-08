@@ -1,9 +1,8 @@
 import pygame
 import sys
-import os
-import time
 
 from circle import Circle
+from utils import clear
 
 # Initialize Pygame
 pygame.init()
@@ -17,7 +16,7 @@ clock = pygame.time.Clock()
 
 running = False
 
-circle = Circle(300, 300, 10, screen, x_speed=5, x_vel=5)
+circle = Circle(300, 300, 10, screen, x_speed=50, x_vel=50)
 
 def draw():
     global circle
@@ -46,8 +45,8 @@ def loop():
 
     circle.update(dt)
     draw()
-    os.system("clear")
-    print(circle.x, circle.y)
+    # clear()
+    # print(circle.x, circle.y)
 
 
 def main():

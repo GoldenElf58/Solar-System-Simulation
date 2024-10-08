@@ -3,7 +3,7 @@ import pygame
 from object import Object
 
 class Circle(Object):
-    def __init__(self, x, y, radius, screen, color=(255,0,0), x_vel=0, y_vel=0, x_acc=0, y_acc=0, x_speed=5, y_speed=5):
+    def __init__(self, x, y, radius, screen, color=(255,0,0), x_vel=0, y_vel=0, x_acc=0, y_acc=0, x_speed=0, y_speed=0):
         super().__init__(x, y, x_acc, y_acc, screen, x_vel=x_vel, y_vel=y_vel)
         self.radius = radius
         self.color = color
