@@ -1,11 +1,12 @@
 import pygame
 import sys
+import os
 
 # Initialize Pygame
 pygame.init()
 
 # Set up the window dimensions
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 600, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Moving Circle")
 
@@ -45,15 +46,17 @@ class Circle(Object):
     def update(self):
         global WIDTH
         # Reverse direction upon reaching screen edges
-        if self.x - self.radius <= 0 or self.x + self.radius >= WIDTH:
-            self.x_acc *= -1
+        if self.x - self.radius <= 0:
+            self.x_acc = abs(self.x_acc)
+        elif self.x + self.radius >= WIDTH:
+            self.x_acc = -abs(self.x_acc)
         super().update()
 
     def draw(self):
         global screen
         pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius)
 
-circle = Circle(0, 0, 10, x_acc=5)
+circle = Circle(300, 300, 10, x_acc=5)
 
 def draw():
     global circle
@@ -82,6 +85,9 @@ def loop():
 
     circle.update()
     draw()
+    
+    os.system("clear")
+    print(circle.x, circle.y)
 
 def main():
     global running
