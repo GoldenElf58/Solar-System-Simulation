@@ -1,5 +1,6 @@
 import pygame
 import sys
+from random import random
 
 from planet import Planet
 from utils import clear
@@ -16,7 +17,8 @@ clock = pygame.time.Clock()
 
 running = False
 
-planet = Planet(300, 300, 10, screen, x_speed=50, x_vel=50)
+num_planets = 2
+planets = [Planet(random(0, screen.get_width()), random(0, screen.get_height()), 10, screen, x_speed=50, x_vel=50) for i in range(2)]
 
 def draw():
     """
