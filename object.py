@@ -6,8 +6,8 @@ class Object():
         self.y = y
         self.x_acc = x_acc
         self.y_acc = y_acc
-        self.x_vel = 0
-        self.y_vel = 0
+        self.x_vel = x_vel
+        self.y_vel = x_vel
         self.screen = screen
     
     def update(self, dt):

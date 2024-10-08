@@ -17,7 +17,7 @@ clock = pygame.time.Clock()
 
 running = False
 
-circle = Circle(300, 300, 10, screen, x_speed=1, x_acc=1)
+circle = Circle(300, 300, 10, screen, x_speed=5, x_vel=5)
 
 def draw():
     global circle
