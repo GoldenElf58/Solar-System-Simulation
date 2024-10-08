@@ -1,5 +1,6 @@
 import os
 
+
 def clear():
     """
     Clear the terminal screen.

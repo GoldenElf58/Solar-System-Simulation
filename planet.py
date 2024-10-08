@@ -2,10 +2,11 @@ import pygame
 
 from object import Object
 
+
 class Planet(Object):
     def __init__(self, x, y, radius, screen, color=(255,0,0), x_vel=0, y_vel=0, x_acc=0, y_acc=0, x_speed=0, y_speed=0):
         """
-        Initialize a Circle object
+        Initialize a Planet object
 
         Parameters
         ----------
@@ -14,11 +15,11 @@ class Planet(Object):
         y : int
             initial y position
         radius : int
-            radius of the circle
+            radius of the planet
         screen : pygame.Surface
-            the screen onto which the circle will be drawn
+            the screen onto which the planet will be drawn
         color : tuple of 3 ints, optional
-            color of the circle (default is red)
+            color of the planet (default is red)
         x_vel : int, optional
             initial x velocity
         y_vel : int, optional
@@ -28,9 +29,9 @@ class Planet(Object):
         y_acc : int, optional
             y acceleration
         x_speed : int, optional
-            x speed at which the circle will move
+            x speed at which the planet will move
         y_speed : int, optional
-            y speed at which the circle will move
+            y speed at which the planet will move
         """
         super().__init__(x, y, x_acc, y_acc, screen, x_vel=x_vel, y_vel=y_vel)
         self.radius = radius
@@ -40,9 +41,9 @@ class Planet(Object):
     
     def update(self, dt):
         """
-        Update the circle's velocity and position
+        Update the planet's velocity and position
 
-        If the circle hits the edge of the screen, it will
+        If the planet hits the edge of the screen, it will
         bounce off and change direction.
 
         Parameters
@@ -58,7 +59,7 @@ class Planet(Object):
 
     def draw(self):
         """
-        Draw the circle onto its screen
+        Draw the planet onto its screen
 
         Draws a circle of radius self.radius at position (self.x, self.y) with
         color self.color onto the screen self.screen

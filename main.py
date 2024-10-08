@@ -1,9 +1,9 @@
-import pygame
 import sys
-from random import random
+from random import randrange
+
+import pygame
 
 from planet import Planet
-from utils import clear
 
 # Initialize Pygame
 pygame.init()
@@ -18,7 +18,9 @@ clock = pygame.time.Clock()
 running = False
 
 num_planets = 2
-planets = [Planet(random(0, screen.get_width()), random(0, screen.get_height()), 10, screen, x_speed=50, x_vel=50) for i in range(2)]
+planets = [Planet(randrange(0, screen.get_width()), randrange(0, screen.get_height()), 10, screen, x_speed=50, x_vel=50)
+           for i in range(2)]
+
 
 def draw():
     """
@@ -44,6 +46,7 @@ def draw():
 
     # Update the display
     pygame.display.flip()
+
 
 def event_handling():
     """
@@ -84,7 +87,7 @@ def loop():
     """
     global clock, planet, deltaTime
     # Cap the frame rate at 60 frames per second
-    dt = clock.tick(60) / 1000 # ms to s
+    dt = clock.tick(60) / 1000  # ms to s
     event_handling()
 
     planet.update(dt)
@@ -117,6 +120,7 @@ def main():
     # Clean up and exit
     pygame.quit()
     sys.exit()
+
 
 if __name__ == "__main__":
     print("Program Started")

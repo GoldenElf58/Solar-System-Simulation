@@ -1,5 +1,6 @@
 import pygame
 
+
 class Object():
     def __init__(self, x, y, x_acc, y_acc, screen, x_vel=0, y_vel=0):
         """
@@ -50,4 +51,4 @@ class Object():
 
         Draws a red rectangle of width and height 10 at position (self.x, self.y) onto the screen self.screen
         """
-        self.pygame.draw.rectangle(self.screen, (255,0,0), self.x, self.y, self.x + 10, self.y + 10)
+        pygame.draw.rect(self.screen, (255,0,0), pygame.Rect(self.x, self.y, self.x + 10, self.y + 10))
