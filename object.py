@@ -8,6 +8,7 @@ class Object():
         self.y_acc = y_acc
         self.x_vel = 0
         self.y_vel = 0
+        self.screen = screen
     
     def update(self):
         self.x_vel += self.x_acc
@@ -16,4 +17,4 @@ class Object():
         self.y += self.y_vel
     
     def draw(self):
-        self.pygame.draw.rectangle(screen, (255,0,0), self.x, self.y, self.x + 10, self.y + 10)
+        self.pygame.draw.rectangle(self.screen, (255,0,0), self.x, self.y, self.x + 10, self.y + 10)

@@ -12,6 +12,8 @@ WIDTH, HEIGHT = 600, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Moving Circle")
 
+print(screen.get_width())
+
 # Set up the clock for controlling the frame rate
 clock = pygame.time.Clock()
 

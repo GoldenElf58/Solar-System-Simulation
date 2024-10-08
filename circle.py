@@ -14,8 +14,8 @@ class Circle(Object):
         global WIDTH
         # Reverse direction upon reaching screen edges
         if self.x - self.radius <= 0:
-            self.x_acc = x_speed
-        elif self.x + self.radius >= WIDTH:
+            self.x_acc = self.x_speed
+        elif self.x + self.radius >= self.screen.get_width():
             self.x_acc = -self.x_speed
         super().update()
 
