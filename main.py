@@ -2,6 +2,8 @@ import pygame
 import sys
 import os
 
+from circle import Circle
+
 # Initialize Pygame
 pygame.init()
 
@@ -15,48 +17,7 @@ clock = pygame.time.Clock()
 
 running = False
 
-
-class Object():
-    def __init__(self, x, y, x_acc, y_acc):
-        self.x = x
-        self.y = y
-        self.x_acc = x_acc
-        self.y_acc = y_acc
-        self.x_vel = 0
-        self.y_vel = 0
-    
-    def update(self):
-        self.x_vel += self.x_acc
-        self.y_vel += self.y_acc
-        self.x += self.x_vel
-        self.y += self.y_vel
-    
-    def draw(self):
-        pygame.draw.rectangle(screen, (255,0,0), self.x, self.y, self.x + 10, self.y + 10)
-
-
-class Circle(Object):
-    def __init__(self, x, y, radius, color=(255,0,0), x_acc=0, y_acc=0, x_speed=5, y_speed=5):
-        super().__init__(x, y, x_acc, y_acc)
-        self.radius = radius
-        self.color = color
-        self.x_speed = x_speed
-        self.y_speed = y_speed
-    
-    def update(self):
-        global WIDTH
-        # Reverse direction upon reaching screen edges
-        if self.x - self.radius <= 0:
-            self.x_acc = abs(self.x_acc)
-        elif self.x + self.radius >= WIDTH:
-            self.x_acc = -abs(self.x_acc)
-        super().update()
-
-    def draw(self):
-        global screen
-        pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius)
-
-circle = Circle(300, 300, 10, x_acc=5)
+circle = Circle(300, 300, 10, screen, x_speed=5, x_acc=5)
 
 def draw():
     global circle
@@ -87,7 +48,6 @@ def loop():
     draw()
     
     os.system("clear")
-    print(circle.x, circle.y)
 
 def main():
     global running
