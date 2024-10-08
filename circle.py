@@ -10,14 +10,14 @@ class Circle(Object):
         self.x_speed = x_speed
         self.y_speed = y_speed
     
-    def update(self):
+    def update(self, dt):
         global WIDTH
         # Reverse direction upon reaching screen edges
         if self.x - self.radius <= 0:
             self.x_acc = self.x_speed
         elif self.x + self.radius >= self.screen.get_width():
             self.x_acc = -self.x_speed
-        super().update()
+        super().update(dt)
 
     def draw(self):
         pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
