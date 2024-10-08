@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-from circle import Planet
+from planet import Planet
 from utils import clear
 
 # Initialize Pygame
