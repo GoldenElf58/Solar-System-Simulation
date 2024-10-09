@@ -46,18 +46,15 @@ class Planet(Object):
         """
         Update the planet's velocity and position
 
-        If the planet hits the edge of the screen, it will
-        bounce off and change direction.
-
         Parameters
         ----------
         dt : float
             time elapsed since the last frame
         """
-        if self.x - self.radius <= 0:
-            self.x_vel = self.x_speed
-        elif self.x + self.radius >= self.screen.get_width():
-            self.x_vel = -self.x_speed
+        if self.x >= self.screen.get_width() or self.x <= 0:
+            self.x_vel *= -1
+        if self.y >= self.screen.get_height() or self.y <= 0:
+            self.y_vel *= -1
         super().update(dt)
 
     def draw(self) -> None:
@@ -68,3 +65,36 @@ class Planet(Object):
         color self.color onto the screen self.screen
         """
         pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
+
+    def apply_gravity(self, planet: "Planet") -> None:
+        """
+        Apply gravitational force to the planet and another planet.
+
+        Parameters
+        ----------
+        planet : Planet
+            the planet to apply gravity to
+        """
+        x_acc_delta = (planet.x - self.x) / (planet.x - self.x)**2
+        y_acc_delta = (planet.y - self.y) / (planet.y - self.y)**2
+        self.x_acc += x_acc_delta
+        self.y_acc += y_acc_delta
+        planet.x_acc -= x_acc_delta
+        planet.y_acc -= y_acc_delta
+
+    def reset_accelerations(self) -> None:
+        """
+        Reset the planet's accelerations to zero.
+
+        This method is used to stop the planet from moving when it is not
+        being interacted with.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        None
+        """
+        self.x_acc = 0
+        self.y_acc = 0
