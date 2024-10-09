@@ -21,7 +21,7 @@ class Handler:
         whether the game loop is running or not
     """
     def __init__(self, screen: pygame.Surface | None = None, solar_system: SolarSystem | None = None,
-                 num_planets: int = 2) -> None:
+                 num_planets: int = 2, time_scale: float = 1) -> None:
         """
         Initialize a Handler object
 
@@ -36,6 +36,9 @@ class Handler:
         num_planets : int, optional
             number of planets to create in the solar system
             (default is 2)
+        time_scale : float, optional
+            the time scale of the game loop
+            (default is 1)
         """
         if screen is None:
             self.screen: pygame.Surface = pygame.display.set_mode((1000, 1000))
@@ -49,6 +52,7 @@ class Handler:
             self.solar_system: SolarSystem = solar_system
         self.clock: pygame.time.Clock = pygame.time.Clock()
         self.running: bool = True
+        self.time_scale = time_scale
 
     def loop(self) -> None:
         """
@@ -65,7 +69,7 @@ class Handler:
         None
         """
         # Cap the frame rate at 60 frames per second
-        dt = self.clock.tick(60) / 1000  # ms to s
+        dt = self.clock.tick(60) / 1000 * self.time_scale
         self.event_handling()
 
         self.solar_system.update(dt)

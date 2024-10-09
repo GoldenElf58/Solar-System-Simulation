@@ -2,8 +2,8 @@ import pygame
 
 
 class Object:
-    def __init__(self, x: int, y: int, x_acc: int, y_acc: int, screen: pygame.Surface,
-                 x_vel: int = 0, y_vel: int = 0) -> None:
+    def __init__(self, x: float, y: float, x_acc: float, y_acc: float, screen: pygame.Surface,
+                 x_vel: float = 0, y_vel: float = 0) -> None:
         """
         Initialize an Object
 
@@ -24,12 +24,12 @@ class Object:
         y_vel : int, optional
             initial y velocity
         """
-        self.x: int = x
-        self.y: int = y
-        self.x_acc: int = x_acc
-        self.y_acc: int = y_acc
-        self.x_vel: int = x_vel
-        self.y_vel: int = y_vel
+        self.x: float = x
+        self.y: float = y
+        self.x_acc: float = x_acc
+        self.y_acc: float = y_acc
+        self.x_vel: float = x_vel
+        self.y_vel: float = y_vel
         self.screen: pygame.Surface = screen
 
     def update(self, dt: float) -> None:

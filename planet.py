@@ -1,46 +1,48 @@
+import math
+
 import pygame
 
 from object import Object
 
 
 class Planet(Object):
-    def __init__(self, x: int, y: int, radius: int, screen: pygame.Surface,
-                 color: tuple = (255, 0, 0), x_vel: int = 0, y_vel: int = 0,
-                 x_acc: int = 0, y_acc: int = 0, x_speed: int = 0,
-                 y_speed: int = 0) -> None:
+    def __init__(self, x: float, y: float, screen: pygame.Surface, color: tuple = (155, 50, 50), mass: float = 0,
+                 x_vel: float = 0, y_vel: float = 0, x_acc: float = 0, y_acc: float = 0, x_speed: float = 0,
+                 y_speed: float = 0) -> None:
         """
         Initialize a Planet object
 
         Parameters
         ----------
-        x : int
+        x : float
             initial x position
-        y : int
+        y : float
             initial y position
-        radius : int
-            radius of the planet
         screen : pygame.Surface
             the screen onto which the planet will be drawn
         color : tuple of 3 ints, optional
             color of the planet (default is red)
-        x_vel : int, optional
+        mass : float, optional
+            mass of the planet
+        x_vel : float, optional
             initial x velocity
-        y_vel : int, optional
+        y_vel : float, optional
             initial y velocity
-        x_acc : int, optional
+        x_acc : float, optional
             x acceleration
-        y_acc : int, optional
+        y_acc : float, optional
             y acceleration
-        x_speed : int, optional
+        x_speed : float, optional
             x speed at which the planet will move
-        y_speed : int, optional
+        y_speed : float, optional
             y speed at which the planet will move
         """
         super().__init__(x, y, x_acc, y_acc, screen, x_vel=x_vel, y_vel=y_vel)
-        self.radius: int = radius
+        self.radius: float = max(min(mass, 20), 2)
         self.color: tuple = color
-        self.x_speed: int = x_speed
-        self.y_speed: int = y_speed
+        self.x_speed: float = x_speed
+        self.y_speed: float = y_speed
+        self.mass: float = mass
 
     def update(self, dt: float) -> None:
         """
@@ -75,12 +77,24 @@ class Planet(Object):
         planet : Planet
             the planet to apply gravity to
         """
-        x_acc_delta = (planet.x - self.x) / (planet.x - self.x)**2
-        y_acc_delta = (planet.y - self.y) / (planet.y - self.y)**2
-        self.x_acc += x_acc_delta
-        self.y_acc += y_acc_delta
-        planet.x_acc -= x_acc_delta
-        planet.y_acc -= y_acc_delta
+        gravitational_constant: float = 6.67430e-11  # Gravitational constant
+        dx = planet.x - self.x
+        dy = planet.y - self.y
+        distance = math.sqrt(dx ** 2 + dy ** 2)
+
+        if distance == 0:
+            return  # Avoid division by zero
+
+        force = (gravitational_constant * self.mass * planet.mass) / (distance ** 2)  # Gravitational force magnitude
+
+        # Calculate the acceleration components
+        x_acc_delta = force * dx / distance
+        y_acc_delta = force * dy / distance
+
+        self.x_acc += x_acc_delta / self.mass
+        self.y_acc += y_acc_delta / self.mass
+        planet.x_acc -= x_acc_delta / planet.mass
+        planet.y_acc -= y_acc_delta / planet.mass
 
     def reset_accelerations(self) -> None:
         """

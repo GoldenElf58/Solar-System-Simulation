@@ -1,9 +1,9 @@
-import pygame
 from random import randrange
+from typing import List
+
+import pygame
 
 from planet import Planet
-
-from typing import List
 
 
 class SolarSystem:
@@ -37,7 +37,9 @@ class SolarSystem:
             the number of new Planet objects to create and add to the solar system
         """
         for _ in range(num_planets):
-            self.planets.append(Planet(randrange(0, self.screen.get_width()), randrange(0, self.screen.get_height()), 10, self.screen))
+            self.planets.append(
+                Planet(randrange(0, self.screen.get_width()), randrange(0, self.screen.get_height()), self.screen,
+                       mass=randrange(10, 20)))
 
     def add_planets(self, planets: List[Planet]) -> None:
         """
