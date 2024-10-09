@@ -78,18 +78,18 @@ class Planet(Object):
             the planet to apply gravity to
         """
         gravitational_constant: float = 6.67430e-11  # Gravitational constant
-        dx = planet.x - self.x
-        dy = planet.y - self.y
-        distance = math.sqrt(dx ** 2 + dy ** 2)
+        dx: float = planet.x - self.x
+        dy: float = planet.y - self.y
+        distance: float = math.sqrt(dx ** 2 + dy ** 2)
 
         if distance == 0:
             return  # Avoid division by zero
 
-        force_over_distance = (gravitational_constant * self.mass * planet.mass) / (distance ** 3)
+        force_over_distance: float = (gravitational_constant * self.mass * planet.mass) / (distance ** 3)
 
         # Calculate the acceleration components
-        x_acc_delta = force_over_distance * dx
-        y_acc_delta = force_over_distance * dy
+        x_acc_delta: float = force_over_distance * dx
+        y_acc_delta: float = force_over_distance * dy
 
         self.x_acc += x_acc_delta / self.mass
         self.y_acc += y_acc_delta / self.mass
