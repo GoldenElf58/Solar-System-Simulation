@@ -85,11 +85,11 @@ class Planet(Object):
         if distance == 0:
             return  # Avoid division by zero
 
-        force = (gravitational_constant * self.mass * planet.mass) / (distance ** 2)  # Gravitational force magnitude
+        force_over_distance = (gravitational_constant * self.mass * planet.mass) / (distance ** 3)
 
         # Calculate the acceleration components
-        x_acc_delta = force * dx / distance
-        y_acc_delta = force * dy / distance
+        x_acc_delta = force_over_distance * dx
+        y_acc_delta = force_over_distance * dy
 
         self.x_acc += x_acc_delta / self.mass
         self.y_acc += y_acc_delta / self.mass
