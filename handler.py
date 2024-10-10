@@ -41,7 +41,7 @@ class Handler:
             (default is 1)
         """
         if screen is None:
-            self.screen: pygame.Surface = pygame.display.set_mode((1000, 1000))
+            self.screen: pygame.Surface = pygame.display.set_mode((800, 800))
             pygame.display.set_caption("Solar System")
         else:
             self.screen: pygame.Surface = screen
