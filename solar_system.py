@@ -4,11 +4,11 @@ from typing import List
 import pygame
 
 from celestial_body import CelestialBody
-from utils import gravitational_constant
+from utils import clear, gravitational_constant
 
 
 class SolarSystem:
-    def __init__(self, screen: pygame.Surface, celestial_bodies: List[CelestialBody] | None = None) -> None:
+    def __init__(self, screen: pygame.Surface, celestial_bodies: List[CelestialBody] | None = None, scale: float = 1) -> None:
         """
         Initialize a SolarSystem object
 
@@ -24,6 +24,7 @@ class SolarSystem:
             celestial_bodies = []
         self.screen = screen
         self.celestial_bodies = celestial_bodies
+        self.scale = scale
 
     def create_celestial_bodies(self, num_celestial_bodies: int, star=True) -> None:
         """
@@ -41,15 +42,15 @@ class SolarSystem:
         """
         for _ in range(num_celestial_bodies):
             self.celestial_bodies.append(
-                CelestialBody(uniform(0, self.screen.get_width()), uniform(0, self.screen.get_height()),
-                              screen=self.screen, mass=10,
+                CelestialBody(uniform(0, self.screen.get_width() * self.scale), uniform(0, self.screen.get_height() * self.scale),
+                              screen=self.screen, mass=5.972e24,
                               x_vel=uniform(-5 * gravitational_constant, 5 * gravitational_constant),
                               y_vel=uniform(-5 * gravitational_constant, 5 * gravitational_constant)))
 
         if star:
             self.celestial_bodies.append(
-                CelestialBody(self.screen.get_width() // 2, self.screen.get_height() // 2, screen=self.screen,
-                              color=(235, 210, 30), mass=4_000, fixed=True))
+                CelestialBody(self.screen.get_width() * self.scale / 2, self.screen.get_height() * self.scale / 2, screen=self.screen,
+                              color=(235, 210, 30), mass=1.98847e30, fixed=True))
 
     def add_celestial_bodies(self, celestial_bodies: List[CelestialBody]) -> None:
         """
@@ -120,15 +121,15 @@ class SolarSystem:
         -------
         None
         """
+        clear()
         for celestial_body in self.celestial_bodies:
             celestial_body.reset_accelerations()
-
         for i, celestial_body in enumerate(self.celestial_bodies):
             for other_celestial_body in self.celestial_bodies[i + 1:]:
                 if celestial_body != other_celestial_body:
                     celestial_body.apply_gravity(other_celestial_body)
 
-    def draw(self) -> None:
+    def draw(self, scale: float = None) -> None:
         """
         Draw all the celestial_bodies in the solar system onto the screen.
 
@@ -143,5 +144,9 @@ class SolarSystem:
         None
 
         """
+        if scale is None:
+            scale = self.scale
+        else:
+            self.scale = scale
         for celestial_body in self.celestial_bodies:
-            celestial_body.draw()
+            celestial_body.draw(scale=scale)

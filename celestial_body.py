@@ -69,14 +69,14 @@ class CelestialBody(Object):
         if self.y >= self.screen.get_height() or self.y <= 0:
             self.y_vel *= -1
 
-    def draw(self) -> None:
+    def draw(self, scale: float = 1) -> None:
         """
         Draw the planet onto its screen
 
         Draws a circle of radius self.radius at position (self.x, self.y) with
         color self.color onto the screen self.screen
         """
-        pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
+        pygame.draw.circle(self.screen, self.color, (self.x / scale, self.y / scale), self.radius)
 
     def apply_gravity(self, celestial_body: "CelestialBody") -> None:
         """
@@ -125,3 +125,8 @@ class CelestialBody(Object):
         """
         self.x_acc = 0
         self.y_acc = 0
+        print('===== New Celestial Body =====')
+        print(f'X Pos: {self.x}')
+        print(f'Y Pos: {self.y}')
+        print(f'X Vel: {self.x_vel}')
+        print(f'Y Vel: {self.y_vel}')

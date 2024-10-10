@@ -21,7 +21,7 @@ class Handler:
         whether the game loop is running or not
     """
     def __init__(self, screen: pygame.Surface | None = None, solar_system: SolarSystem | None = None,
-                 num_celestial_bodies: int = 2, time_scale: float = 1) -> None:
+                 num_celestial_bodies: int = 2, time_scale: float = 1, scale: float = 1) -> None:
         """
         Initialize a Handler object
 
@@ -39,6 +39,13 @@ class Handler:
         time_scale : float, optional
             the time scale of the game loop
             (default is 1)
+        scale : float, optional
+            meters per pixel
+            (default is 1)
+
+        Returns
+        -------
+        None
         """
         if screen is None:
             self.screen: pygame.Surface = pygame.display.set_mode((800, 800))
@@ -52,7 +59,8 @@ class Handler:
             self.solar_system: SolarSystem = solar_system
         self.clock: pygame.time.Clock = pygame.time.Clock()
         self.running: bool = True
-        self.time_scale = time_scale
+        self.time_scale: float = time_scale
+        self.scale: float = scale
 
     def loop(self) -> None:
         """
@@ -73,7 +81,7 @@ class Handler:
         self.event_handling()
 
         self.solar_system.update(dt)
-        self.draw()
+        self.draw(scale=self.scale)
 
     def event_handling(self) -> None:
         """
@@ -94,7 +102,7 @@ class Handler:
             if event.type == pygame.QUIT:
                 self.running = False
 
-    def draw(self) -> None:
+    def draw(self, scale: float = 1) -> None:
         """
         Draw the planet onto the screen.
 
@@ -109,5 +117,5 @@ class Handler:
         None
         """
         self.screen.fill((0, 0, 0))
-        self.solar_system.draw()
+        self.solar_system.draw(scale=scale)
         pygame.display.flip()
