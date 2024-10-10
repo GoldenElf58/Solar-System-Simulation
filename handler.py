@@ -21,7 +21,7 @@ class Handler:
         whether the game loop is running or not
     """
     def __init__(self, screen: pygame.Surface | None = None, solar_system: SolarSystem | None = None,
-                 num_planets: int = 2, time_scale: float = 1) -> None:
+                 num_celestial_bodies: int = 2, time_scale: float = 1) -> None:
         """
         Initialize a Handler object
 
@@ -47,7 +47,7 @@ class Handler:
             self.screen: pygame.Surface = screen
         if solar_system is None:
             self.solar_system: SolarSystem = SolarSystem(self.screen)
-            self.solar_system.create_planets(num_planets)
+            self.solar_system.create_celestial_bodies(num_celestial_bodies)
         else:
             self.solar_system: SolarSystem = solar_system
         self.clock: pygame.time.Clock = pygame.time.Clock()

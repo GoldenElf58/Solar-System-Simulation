@@ -1,5 +1,8 @@
 import os
 
+# Constants
+gravitational_constant = 6.67430e-11
+
 
 def clear() -> None:
     """

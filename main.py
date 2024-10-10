@@ -23,7 +23,7 @@ def main():
     # Initialize pygame
     pygame.init()
 
-    handler = Handler(num_planets=5, time_scale=60*60*24*365*10000)
+    handler = Handler(num_celestial_bodies=1, time_scale=60*60*24*365*10000)
     while handler.running:
         handler.loop()
 
