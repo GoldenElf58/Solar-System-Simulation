@@ -1,4 +1,5 @@
 import sys
+import threading
 
 import pygame
 
@@ -23,7 +24,9 @@ def main():
     # Initialize pygame
     pygame.init()
 
-    handler = Handler(num_celestial_bodies=1, time_scale=60*60*24*30, scale=1_500_000_000)
+    handler: Handler = Handler(num_celestial_bodies=200, time_scale=60*60*24*365*1_000, scale=500_000_000, star=False)
+    t1 = threading.Thread(target=handler.draw_repeatedly)
+    t1.start()
     while handler.running:
         handler.loop()
 

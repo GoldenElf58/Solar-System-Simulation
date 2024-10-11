@@ -9,7 +9,7 @@ from utils import gravitational_constant
 class CelestialBody(Object):
     def __init__(self, x: float, y: float, screen: pygame.Surface, color: tuple = (155, 50, 50), mass: float = 0,
                  x_vel: float = 0, y_vel: float = 0, x_acc: float = 0, y_acc: float = 0, x_speed: float = 0,
-                 y_speed: float = 0, fixed: bool = False, bounded: bool = False) -> None:
+                 y_speed: float = 0, fixed: bool = False, bounded: bool = False, scale: float = 1) -> None:
         """
         Initialize a Planet object
 
@@ -37,15 +37,22 @@ class CelestialBody(Object):
             x speed at which the planet will move
         y_speed : float, optional
             y speed at which the planet will move
+        fixed : bool, optional
+            whether the planet is fixed
+        bounded : bool, optional
+            whether the celestial body is bounded
+        scale : float, optional
+            meters per pixel
         """
         super().__init__(x, y, x_acc, y_acc, screen, x_vel=x_vel, y_vel=y_vel)
-        self.radius: float = max(min(mass, 20), 2)
+        self.radius: float = max(min(mass / scale, 2), 2)
         self.color: tuple = color
         self.x_speed: float = x_speed
         self.y_speed: float = y_speed
         self.mass: float = mass
         self.fixed: bool = fixed
         self.bounded: bool = bounded
+        self.scale: float = scale
 
     def update(self, dt: float) -> None:
         """
@@ -109,7 +116,7 @@ class CelestialBody(Object):
         celestial_body.x_acc -= x_acc_delta / celestial_body.mass
         celestial_body.y_acc -= y_acc_delta / celestial_body.mass
 
-    def reset_accelerations(self) -> None:
+    def reset_accelerations(self, info: bool = False) -> None:
         """
         Reset the planet's accelerations to zero.
 
@@ -125,8 +132,9 @@ class CelestialBody(Object):
         """
         self.x_acc = 0
         self.y_acc = 0
-        print('===== New Celestial Body =====')
-        print(f'X Pos: {self.x}')
-        print(f'Y Pos: {self.y}')
-        print(f'X Vel: {self.x_vel}')
-        print(f'Y Vel: {self.y_vel}')
+        if info:
+            print('===== New Celestial Body =====')
+            print(f'X Pos: {self.x}')
+            print(f'Y Pos: {self.y}')
+            print(f'X Vel: {self.x_vel}')
+            print(f'Y Vel: {self.y_vel}')

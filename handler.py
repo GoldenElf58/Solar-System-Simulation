@@ -1,3 +1,5 @@
+import time
+
 import pygame
 
 from solar_system import SolarSystem
@@ -21,7 +23,7 @@ class Handler:
         whether the game loop is running or not
     """
     def __init__(self, screen: pygame.Surface | None = None, solar_system: SolarSystem | None = None,
-                 num_celestial_bodies: int = 2, time_scale: float = 1, scale: float = 1) -> None:
+                 num_celestial_bodies: int = 2, time_scale: float = 1, scale: float = 1, star=False) -> None:
         """
         Initialize a Handler object
 
@@ -33,8 +35,8 @@ class Handler:
         solar_system : SolarSystem, optional
             a SolarSystem object to use for the handler
             (default is a new SolarSystem object with the given screen)
-        num_planets : int, optional
-            number of planets to create in the solar system
+        num_celestial_bodies : int, optional
+            number of CelestialBody objects to create in the solar system
             (default is 2)
         time_scale : float, optional
             the time scale of the game loop
@@ -45,22 +47,27 @@ class Handler:
 
         Returns
         -------
-        None
+        Handler
         """
         if screen is None:
-            self.screen: pygame.Surface = pygame.display.set_mode((800, 800))
+            self.screen: pygame.Surface = pygame.display.set_mode((1900, 1100))
             pygame.display.set_caption("Solar System")
         else:
             self.screen: pygame.Surface = screen
         if solar_system is None:
-            self.solar_system: SolarSystem = SolarSystem(self.screen)
-            self.solar_system.create_celestial_bodies(num_celestial_bodies)
+            self.solar_system: SolarSystem = SolarSystem(self.screen, scale=scale)
+            self.solar_system.create_celestial_bodies(num_celestial_bodies, star=star)
         else:
             self.solar_system: SolarSystem = solar_system
         self.clock: pygame.time.Clock = pygame.time.Clock()
         self.running: bool = True
         self.time_scale: float = time_scale
         self.scale: float = scale
+        self.t_last: float = time.perf_counter()
+        self.t_now: float = self.t_last
+        self.cps: float = 0
+        self.fps: float = 0
+        self.font = pygame.font.SysFont("Arial", 24)
 
     def loop(self) -> None:
         """
@@ -76,12 +83,14 @@ class Handler:
         -------
         None
         """
-        # Cap the frame rate at 60 frames per second
-        dt = self.clock.tick(60) / 1000 * self.time_scale
-        self.event_handling()
+        t_now = time.perf_counter()
+        dt = t_now - self.t_last
+        self.cps = 1 / dt
+        dt *= self.time_scale
+        self.t_last = t_now
 
+        self.event_handling()
         self.solar_system.update(dt)
-        self.draw(scale=self.scale)
 
     def event_handling(self) -> None:
         """
@@ -102,7 +111,7 @@ class Handler:
             if event.type == pygame.QUIT:
                 self.running = False
 
-    def draw(self, scale: float = 1) -> None:
+    def draw(self, scale: float = 1, cps: bool = False, fps: bool = False) -> None:
         """
         Draw the planet onto the screen.
 
@@ -118,4 +127,22 @@ class Handler:
         """
         self.screen.fill((0, 0, 0))
         self.solar_system.draw(scale=scale)
+        if cps:
+            text = self.font.render(f"CPS: {self.cps:.0f}", True, (255, 255, 255))
+            self.screen.blit(text, (10, 10))
+        if fps and cps:
+            text = self.font.render(f"FPS: {self.fps:.0f}", True, (255, 255, 255))
+            self.screen.blit(text, (10, 30))
+        elif fps:
+            text = self.font.render(f"FPS: {self.fps:.0f}", True, (255, 255, 255))
+            self.screen.blit(text, (10, 10))
         pygame.display.flip()
+
+    def draw_repeatedly(self, fps: bool = False, cps: bool = True) -> None:
+        while self.running:
+            if fps:
+                dt = self.clock.tick(60) / 1000
+                self.fps = 1 / dt
+            else:
+                self.clock.tick(60)
+            self.draw(scale=self.scale, cps=cps, fps=fps)
