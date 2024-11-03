@@ -4,12 +4,25 @@ import pygame
 
 from object import Object
 from utils import gravitational_constant
+from vector import Vector
 
 
 class CelestialBody(Object):
-    def __init__(self, x: float, y: float, screen: pygame.Surface, color: tuple = (155, 50, 50), mass: float = 0,
-                 x_vel: float = 0, y_vel: float = 0, x_acc: float = 0, y_acc: float = 0, x_speed: float = 0,
-                 y_speed: float = 0, fixed: bool = False, bounded: bool = False, scale: float = 1) -> None:
+    def __init__(self,
+                 x: float,
+                 y: float,
+                 screen: pygame.Surface,
+                 color: tuple = (150, 150, 150, 255),
+                 mass: float = 0,
+                 x_vel: float = 0,
+                 y_vel: float = 0,
+                 x_acc: float = 0,
+                 y_acc: float = 0,
+                 x_speed: float = 0,
+                 y_speed: float = 0,
+                 fixed: bool = False,
+                 bounded: bool = False,
+                 scale: float = 1) -> None:
         """
         Initialize a Planet object
 
@@ -45,7 +58,7 @@ class CelestialBody(Object):
             meters per pixel
         """
         super().__init__(x, y, x_acc, y_acc, screen, x_vel=x_vel, y_vel=y_vel)
-        self.radius: float = max(min(mass / scale, 2), 2)
+        self.radius: float = 4  # max(min(mass / scale, 2), 2)
         self.color: tuple = color
         self.x_speed: float = x_speed
         self.y_speed: float = y_speed
@@ -71,19 +84,23 @@ class CelestialBody(Object):
         if not self.bounded:
             return
 
-        if self.x >= self.screen.get_width() or self.x <= 0:
-            self.x_vel *= -1
-        if self.y >= self.screen.get_height() or self.y <= 0:
-            self.y_vel *= -1
+        if self.pos.x >= self.screen.get_width() or self.pos.x <= 0:
+            self.vel.x *= -1
+        if self.pos.y >= self.screen.get_height() or self.pos.y <= 0:
+            self.vel.y *= -1
 
-    def draw(self, scale: float = 1) -> None:
+    def show(self, scale: float = 1) -> None:
         """
         Draw the planet onto its screen
 
-        Draws a circle of radius self.radius at position (self.x, self.y) with
+        Draws a circle of radius self.radius at position (self.pos.x, self.pos.y) with
         color self.color onto the screen self.screen
         """
-        pygame.draw.circle(self.screen, self.color, (self.x / scale, self.y / scale), self.radius)
+        target_rect = pygame.Rect((self.pos.x / scale, self.pos.y / scale), (0, 0)).inflate((self.radius * 2, self.radius * 2))
+        shape_surf = pygame.Surface(target_rect.size, pygame.SRCALPHA)
+        pygame.draw.circle(shape_surf, self.color, (self.radius, self.radius),self. radius)
+        self.screen.blit(shape_surf, target_rect)
+        # pygame.draw.circle(self.screen, self.color, (self.pos.x / scale, self.pos.y / scale), self.radius)
 
     def apply_gravity(self, celestial_body: "CelestialBody") -> None:
         """
@@ -98,8 +115,8 @@ class CelestialBody(Object):
         -------
         None
         """
-        dx: float = celestial_body.x - self.x
-        dy: float = celestial_body.y - self.y
+        dx: float = celestial_body.pos.x - self.pos.x
+        dy: float = celestial_body.pos.y - self.pos.y
         distance: float = sqrt(dx ** 2 + dy ** 2)
 
         if distance == 0:
@@ -111,10 +128,10 @@ class CelestialBody(Object):
         x_acc_delta: float = force_over_distance * dx
         y_acc_delta: float = force_over_distance * dy
 
-        self.x_acc += x_acc_delta / self.mass
-        self.y_acc += y_acc_delta / self.mass
-        celestial_body.x_acc -= x_acc_delta / celestial_body.mass
-        celestial_body.y_acc -= y_acc_delta / celestial_body.mass
+        self.acc.x += x_acc_delta / self.mass
+        self.acc.y += y_acc_delta / self.mass
+        celestial_body.acc.x -= x_acc_delta / celestial_body.mass
+        celestial_body.acc.y -= y_acc_delta / celestial_body.mass
 
     def reset_accelerations(self, info: bool = False) -> None:
         """
@@ -130,11 +147,10 @@ class CelestialBody(Object):
         -------
         None
         """
-        self.x_acc = 0
-        self.y_acc = 0
+        self.acc = Vector(0)
         if info:
             print('===== New Celestial Body =====')
-            print(f'X Pos: {self.x}')
-            print(f'Y Pos: {self.y}')
-            print(f'X Vel: {self.x_vel}')
-            print(f'Y Vel: {self.y_vel}')
+            print(f'X Pos: {self.pos.x}')
+            print(f'Y Pos: {self.pos.y}')
+            print(f'X Vel: {self.vel.x}')
+            print(f'Y Vel: {self.vel.y}')

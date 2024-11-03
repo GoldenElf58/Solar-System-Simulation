@@ -1,5 +1,7 @@
 import pygame
 
+from vector import Point, Vector
+
 
 class Object:
     def __init__(self, x: float, y: float, x_acc: float, y_acc: float, screen: pygame.Surface,
@@ -24,12 +26,17 @@ class Object:
         y_vel : int, optional
             initial y velocity
         """
-        self.x: float = x
-        self.y: float = y
-        self.x_acc: float = x_acc
-        self.y_acc: float = y_acc
-        self.x_vel: float = x_vel
-        self.y_vel: float = y_vel
+        self.pos: Point = Point(x, y)
+        self.vel: Vector = Vector(x_vel, y_vel)
+        self.acc: Vector = Vector(x_acc, y_acc)
+       
+        # self.x: float = x
+        # self.y: float = y
+        # self.x_acc: float = x_acc
+        # self.y_acc: float = y_acc
+        # self.x_vel: float = x_vel
+        # self.y_vel: float = y_vel
+        
         self.screen: pygame.Surface = screen
 
     def update(self, dt: float) -> None:
@@ -41,12 +48,17 @@ class Object:
         dt : float
             time elapsed since the last frame
         """
-        self.x_vel += self.x_acc
-        self.y_vel += self.y_acc
-        self.x += self.x_vel * dt
-        self.y += self.y_vel * dt
+        self.vel.x += self.acc.x
+        self.vel.y += self.acc.y
+        self.pos.x += self.vel.x * dt
+        self.pos.y += self.vel.y * dt
+        
+        # self.x_vel += self.x_acc
+        # self.y_vel += self.y_acc
+        # self.x += self.x_vel * dt
+        # self.y += self.y_vel * dt
 
-    def draw(self) -> None:
+    def show(self) -> None:
         """
         Draw the object onto its screen
         Draws a red rectangle of width and height 10 at position (self.x, self.y) onto the screen self.screen

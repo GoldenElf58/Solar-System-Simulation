@@ -1,3 +1,4 @@
+import math
 import time
 
 import pygame
@@ -23,7 +24,7 @@ class Handler:
         whether the game loop is running or not
     """
     def __init__(self, screen: pygame.Surface | None = None, solar_system: SolarSystem | None = None,
-                 num_celestial_bodies: int = 2, time_scale: float = 1, scale: float = 1, star=False) -> None:
+                 num_celestial_bodies: int = 2, time_scale: float = 1, scale: float = 1, star=False, update=True) -> None:
         """
         Initialize a Handler object
 
@@ -50,15 +51,18 @@ class Handler:
         Handler
         """
         if screen is None:
-            self.screen: pygame.Surface = pygame.display.set_mode((1900, 1100))
+            self.screen: pygame.Surface = pygame.display.set_mode((1920, 1080))
             pygame.display.set_caption("Solar System")
         else:
             self.screen: pygame.Surface = screen
+        
         if solar_system is None:
             self.solar_system: SolarSystem = SolarSystem(self.screen, scale=scale)
-            self.solar_system.create_celestial_bodies(num_celestial_bodies, star=star)
+            self.solar_system.create_celestial_bodies_circular(num_celestial_bodies, star=star)
         else:
             self.solar_system: SolarSystem = solar_system
+        
+        self.update: bool = update
         self.clock: pygame.time.Clock = pygame.time.Clock()
         self.running: bool = True
         self.time_scale: float = time_scale
@@ -90,7 +94,8 @@ class Handler:
         self.t_last = t_now
 
         self.event_handling()
-        self.solar_system.update(dt)
+        if self.update:
+            self.solar_system.update(dt)
 
     def event_handling(self) -> None:
         """
@@ -110,8 +115,11 @@ class Handler:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.running = False
 
-    def draw(self, scale: float = 1, cps: bool = False, fps: bool = False) -> None:
+    def draw(self, cps: bool = False, fps: bool = False) -> None:
         """
         Draw the planet onto the screen.
 
@@ -125,24 +133,29 @@ class Handler:
         -------
         None
         """
-        self.screen.fill((0, 0, 0))
-        self.solar_system.draw(scale=scale)
+        # self.screen.fill(pygame.Color('#000000'))
+        shape_surf = pygame.Surface(self.screen.get_rect().size, pygame.SRCALPHA)
+        pygame.draw.rect(shape_surf, (0, 0, 0, 5), shape_surf.get_rect())
+        self.screen.blit(shape_surf, self.screen.get_rect())
+        self.solar_system.draw(scale=self.scale)
+        
         if cps:
             text = self.font.render(f"CPS: {self.cps:.0f}", True, (255, 255, 255))
             self.screen.blit(text, (10, 10))
+        
         if fps and cps:
             text = self.font.render(f"FPS: {self.fps:.0f}", True, (255, 255, 255))
             self.screen.blit(text, (10, 30))
         elif fps:
             text = self.font.render(f"FPS: {self.fps:.0f}", True, (255, 255, 255))
             self.screen.blit(text, (10, 10))
+        
         pygame.display.flip()
 
-    def draw_repeatedly(self, fps: bool = False, cps: bool = True) -> None:
+    def draw_repeatedly(self, fps: bool = False, cps: bool = False) -> None:
         while self.running:
-            if fps:
-                dt = self.clock.tick(60) / 1000
-                self.fps = 1 / dt
-            else:
-                self.clock.tick(60)
-            self.draw(scale=self.scale, cps=cps, fps=fps)
+            dt = self.clock.tick(60) / 1000
+            self.fps = 1 / dt if dt > 0 else math.inf
+            self.event_handling()
+            
+            self.draw(cps=cps, fps=fps)

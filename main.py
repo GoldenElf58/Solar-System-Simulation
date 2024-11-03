@@ -20,16 +20,25 @@ def main():
     -------
     None
     """
-
+    
+    update = True
+    star = True
+    scale = 1
+    time_scale = 1
+    n = 10
+    
     # Initialize pygame
     pygame.init()
-
-    handler: Handler = Handler(num_celestial_bodies=200, time_scale=60*60*24*365*1_000, scale=500_000_000, star=False)
+    
+    handler: Handler = Handler(num_celestial_bodies=n, time_scale=time_scale, scale=scale, star=star, update=update)
     t1 = threading.Thread(target=handler.draw_repeatedly)
     t1.start()
+    
+    # handler.draw_repeatedly(fps=True, cps=True)
+    
     while handler.running:
         handler.loop()
-
+    
     # Clean up and exit
     pygame.quit()
     sys.exit()
